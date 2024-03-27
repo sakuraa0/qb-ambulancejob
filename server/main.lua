@@ -356,7 +356,10 @@ QBCore.Commands.Add('911e', Lang:t('info.ems_report'), { { name = 'message', hel
 	end
 end)
 
-QBCore.Commands.Add('status', Lang:t('info.check_health'), {}, false, function(source, _)
+if Config.UseOxMenu then 
+	print('you need use the F6 Menu for Ambulance job')
+else
+	QBCore.Commands.Add('status', Lang:t('info.check_health'), {}, false, function(source, _)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	if Player.PlayerData.job.name == 'ambulance' then
@@ -364,9 +367,9 @@ QBCore.Commands.Add('status', Lang:t('info.check_health'), {}, false, function(s
 	else
 		TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_ems'), 'error')
 	end
-end)
+	end)
 
-QBCore.Commands.Add('heal', Lang:t('info.heal_player'), {}, false, function(source, _)
+	QBCore.Commands.Add('heal', Lang:t('info.heal_player'), {}, false, function(source, _)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	if Player.PlayerData.job.name == 'ambulance' then
@@ -374,9 +377,9 @@ QBCore.Commands.Add('heal', Lang:t('info.heal_player'), {}, false, function(sour
 	else
 		TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_ems'), 'error')
 	end
-end)
+	end)
 
-QBCore.Commands.Add('revivep', Lang:t('info.revive_player'), {}, false, function(source, _)
+	QBCore.Commands.Add('revivep', Lang:t('info.revive_player'), {}, false, function(source, _)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	if Player.PlayerData.job.name == 'ambulance' then
@@ -384,9 +387,9 @@ QBCore.Commands.Add('revivep', Lang:t('info.revive_player'), {}, false, function
 	else
 		TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_ems'), 'error')
 	end
-end)
+	end)
 
-QBCore.Commands.Add('revive', Lang:t('info.revive_player_a'), { { name = 'id', help = Lang:t('info.player_id') } }, false, function(source, args)
+	QBCore.Commands.Add('revive', Lang:t('info.revive_player_a'), { { name = 'id', help = Lang:t('info.player_id') } }, false, function(source, args)
 	local src = source
 	if args[1] then
 		local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
@@ -398,9 +401,9 @@ QBCore.Commands.Add('revive', Lang:t('info.revive_player_a'), { { name = 'id', h
 	else
 		TriggerClientEvent('hospital:client:Revive', src)
 	end
-end, 'admin')
+	end, 'admin')
 
-QBCore.Commands.Add('setpain', Lang:t('info.pain_level'), { { name = 'id', help = Lang:t('info.player_id') } }, false, function(source, args)
+	QBCore.Commands.Add('setpain', Lang:t('info.pain_level'), { { name = 'id', help = Lang:t('info.player_id') } }, false, function(source, args)
 	local src = source
 	if args[1] then
 		local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
@@ -412,9 +415,9 @@ QBCore.Commands.Add('setpain', Lang:t('info.pain_level'), { { name = 'id', help 
 	else
 		TriggerClientEvent('hospital:client:SetPain', src)
 	end
-end, 'admin')
+	end, 'admin')
 
-QBCore.Commands.Add('kill', Lang:t('info.kill'), { { name = 'id', help = Lang:t('info.player_id') } }, false, function(source, args)
+	QBCore.Commands.Add('kill', Lang:t('info.kill'), { { name = 'id', help = Lang:t('info.player_id') } }, false, function(source, args)
 	local src = source
 	if args[1] then
 		local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
@@ -426,9 +429,9 @@ QBCore.Commands.Add('kill', Lang:t('info.kill'), { { name = 'id', help = Lang:t(
 	else
 		TriggerClientEvent('hospital:client:KillPlayer', src)
 	end
-end, 'admin')
+	end, 'admin')
 
-QBCore.Commands.Add('aheal', Lang:t('info.heal_player_a'), { { name = 'id', help = Lang:t('info.player_id') } }, false, function(source, args)
+	QBCore.Commands.Add('aheal', Lang:t('info.heal_player_a'), { { name = 'id', help = Lang:t('info.player_id') } }, false, function(source, args)
 	local src = source
 	if args[1] then
 		local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
@@ -440,7 +443,9 @@ QBCore.Commands.Add('aheal', Lang:t('info.heal_player_a'), { { name = 'id', help
 	else
 		TriggerClientEvent('hospital:client:adminHeal', src)
 	end
-end, 'admin')
+	end, 'admin')
+	print('Commands are enabled')
+end
 
 -- Items
 

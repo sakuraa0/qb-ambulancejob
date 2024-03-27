@@ -29,6 +29,15 @@ healAnimDict = 'mini@cpr@char_a@cpr_str'
 healAnim = 'cpr_pumpchest'
 injured = {}
 
+--Added
+
+AddEventHandler('onResourceStart', function(resourceName)
+    if GetCurrentResourceName() == resourceName then
+        local player = QBCore.Functions.GetPlayerData()
+        PlayerJob = player.job
+    end
+end)
+
 BodyParts = {
     ['HEAD'] = { label = Lang:t('body.head'), causeLimp = false, isDamaged = false, severity = 0 },
     ['NECK'] = { label = Lang:t('body.neck'), causeLimp = false, isDamaged = false, severity = 0 },
@@ -983,4 +992,127 @@ else
             end
         end
     end)
+end
+
+--Added for ox Menu 
+if Config.UseOxMenu then 
+
+    RegisterNetEvent('qb-ambulance:client:openmenu')
+    AddEventHandler('qb-ambulance:client:openmenu', function()
+    if PlayerJob.type == 'ambulance' and PlayerJob.onduty then
+        lib.showContext('ambulance_menu')
+    end
+    end)
+
+    lib.registerContext({
+    id = 'ambulance_menu',
+    title = 'Ambulance Menu',
+    options = {
+        {
+            title = 'Check Status',
+            description = 'Check player health status',
+            onSelect = function()
+                local input = lib.inputDialog('Check Status', {'Enter Player ID'})
+                if not input then return end
+                
+                local playerId = tonumber(input[1])
+                if not playerId then
+                    print('Invalid player ID')
+                    return
+                end
+
+                TriggerServerEvent('hospital:server:CheckStatus', playerId)
+            end
+        },
+        {
+            title = 'Treat Wounds',
+            description = 'Heal player wounds',
+            onSelect = function()
+                local input = lib.inputDialog('Treat Wounds', {'Enter Player ID'})
+                if not input then return end
+                
+                local playerId = tonumber(input[1])
+                if not playerId then
+                    print('Invalid player ID')
+                    return
+                end
+
+                TriggerServerEvent('hospital:server:TreatWounds', playerId)
+            end
+        },
+        {
+            title = 'Revive Player',
+            description = 'Revive a downed player',
+            onSelect = function()
+                local input = lib.inputDialog('Revive Player', {'Enter Player ID'})
+                if not input then return end
+                
+                local playerId = tonumber(input[1])
+                if not playerId then
+                    print('Invalid player ID')
+                    return
+                end
+
+                TriggerServerEvent('hospital:server:RevivePlayer', playerId)
+            end
+        },
+        {
+            title = 'Set Pain Level',
+            description = 'Set pain level for a player',
+            onSelect = function()
+                local input = lib.inputDialog('Set Pain Level', {'Enter Player ID'})
+                if not input then return end
+                
+                local playerId = tonumber(input[1])
+                if not playerId then
+                    print('Invalid player ID')
+                    return
+                end
+
+                TriggerServerEvent('hospital:server:SetPain', playerId)
+            end
+        },
+        {
+            title = 'Kill Player',
+            description = 'Kill a player',
+            onSelect = function()
+                local input = lib.inputDialog('Kill Player', {'Enter Player ID'})
+                if not input then return end
+                
+                local playerId = tonumber(input[1])
+                if not playerId then
+                    print('Invalid player ID')
+                    return
+                end
+
+                TriggerServerEvent('hospital:server:KillPlayer', playerId)
+            end
+        },
+        {
+            title = 'Admin Heal',
+            description = 'Admin heal a player',
+            onSelect = function()
+                local input = lib.inputDialog('Admin Heal', {'Enter Player ID'})
+                if not input then return end
+                
+                local playerId = tonumber(input[1])
+                if not playerId then
+                    print('Invalid player ID')
+                    return
+                end
+
+                TriggerServerEvent('hospital:server:adminHeal', playerId)
+            end
+        },
+    }
+    })
+
+    lib.addKeybind({
+    name = "ambulancemenu",
+    description = "Ambulance Menu",
+    defaultKey = "F6",
+    onPressed = function(self)
+        TriggerEvent('qb-ambulance:client:openmenu')
+    end,
+    })
 end
